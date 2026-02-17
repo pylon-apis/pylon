@@ -1,0 +1,14 @@
+{
+  "name": "pylon-qr-code-api",
+  "version": "1.0.0",
+  "description": "QR code generation API for the x402 agent economy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "qrcode": "^1.5.4"
+  }
+}
