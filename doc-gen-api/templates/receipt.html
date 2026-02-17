@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a2e; padding: 60px; line-height: 1.5; max-width: 400px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px dashed #ddd; }
+  .merchant { font-size: 24px; font-weight: 700; }
+  .receipt-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-top: 8px; }
+  .meta { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 24px; }
+  .items { margin-bottom: 24px; }
+  .item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+  .divider { border-top: 2px solid #1a1a2e; margin: 16px 0; }
+  .total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; }
+  .footer { text-align: center; margin-top: 32px; padding-top: 24px; border-top: 2px dashed #ddd; font-size: 12px; color: #bbb; }
+  .txid { font-family: monospace; font-size: 11px; color: #999; text-align: center; margin-top: 16px; word-break: break-all; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="merchant">{{merchant}}</div>
+    <div class="receipt-label">Receipt</div>
+  </div>
+
+  <div class="meta">
+    <span>{{date}}</span>
+    <span>#{{transaction_id}}</span>
+  </div>
+
+  <div class="items">
+    {{#each items}}
+    <div class="item">
+      <span>{{this.name}}{{#if this.qty}} × {{this.qty}}{{/if}}</span>
+      <span>${{formatPrice this.price}}</span>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="divider"></div>
+  <div class="total">
+    <span>Total</span>
+    <span>${{formatPrice total}}</span>
+  </div>
+
+  <div class="footer">
+    Thank you for your purchase!
+    <div class="txid">Transaction: {{transaction_id}}</div>
+  </div>
+</body>
+</html>

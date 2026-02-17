@@ -1,0 +1,15 @@
+{
+  "name": "pylon-doc-gen-api",
+  "version": "1.0.0",
+  "description": "Document generation API for the x402 agent economy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "handlebars": "^4.7.8",
+    "puppeteer": "^23.0.0"
+  }
+}
