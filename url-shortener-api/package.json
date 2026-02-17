@@ -1,0 +1,11 @@
+{
+  "name": "pylon-url-shortener-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.21.0",
+    "better-sqlite3": "^11.0.0",
+    "nanoid": "^3.3.7"
+  }
+}

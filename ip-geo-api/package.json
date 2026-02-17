@@ -1,0 +1,10 @@
+{
+  "name": "pylon-ip-geo-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.21.0",
+    "geoip-lite": "^1.4.10"
+  }
+}
