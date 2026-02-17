@@ -1,0 +1,14 @@
+{
+  "name": "pylon-md-to-pdf-api",
+  "version": "1.0.0",
+  "description": "Markdown to PDF conversion API for the x402 agent economy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "md-to-pdf": "^5.2.4"
+  }
+}
