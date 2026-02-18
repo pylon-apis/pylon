@@ -8,7 +8,7 @@ const SCREENSHOT_TIMEOUT = 30_000;
 const WALLET_ADDRESS = "0xAd7658F913F50EAd66a8871d076C675294265Ff7";
 const FACILITATOR_URL = "https://x402.org/facilitator";
 const PRICE_PER_SCREENSHOT = "$0.01";
-const NETWORK = "eip155:84532"; // Base Sepolia
+const NETWORK = "eip155:8453"; // Base Mainnet
 
 let browser;
 

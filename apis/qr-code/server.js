@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 const WALLET_ADDRESS = "0xAd7658F913F50EAd66a8871d076C675294265Ff7";
 const FACILITATOR_URL = "https://x402.org/facilitator";
 const PRICE_AMOUNT = "1000"; // $0.001 in USDC (6 decimals)
-const NETWORK = "eip155:84532";
+const NETWORK = "eip155:8453"; // Base Mainnet
 
 const DOCS_HTML = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>Pylon QR Code API</title>
