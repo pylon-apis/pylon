@@ -5,20 +5,11 @@
  * 
  * Gives Claude, Cursor, and any MCP-compatible client access to
  * Pylon's full capability set — the action layer for AI agents.
+ * 
+ * No API keys. Pay per request via x402 micropayments on Base.
  *
  * Usage:
- *   PYLON_API_KEY=your-api-key npx @pylon/mcp
- *
- * Or add to Claude Desktop config:
- *   {
- *     "mcpServers": {
- *       "pylon": {
- *         "command": "npx",
- *         "args": ["@pylon/mcp"],
- *         "env": { "PYLON_API_KEY": "your-key" }
- *       }
- *     }
- *   }
+ *   npx @pylonapi/mcp
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -31,7 +22,6 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 const GATEWAY_URL = process.env.PYLON_GATEWAY_URL || "https://api.pylonapi.com";
-const API_KEY = process.env.PYLON_API_KEY || "";
 const CAPABILITIES_CACHE_TTL = 5 * 60 * 1000; // 5 min
 
 let capabilitiesCache = null;
@@ -56,7 +46,6 @@ async function getCapabilities() {
     return capabilitiesCache;
   } catch (err) {
     console.error(`[pylon-mcp] Failed to fetch capabilities: ${err.message}`);
-    // Return cache even if stale
     return capabilitiesCache || [];
   }
 }
@@ -90,17 +79,18 @@ function toJsonSchema(pylonSchema) {
   return { type: "object", properties, required };
 }
 
+// ── Format a 402 response into a helpful message ──
+function format402(payReq) {
+  const accepts = payReq.accepts?.[0];
+  if (!accepts) {
+    return "Payment required. This capability requires x402 payment on Base.";
+  }
+  const costUsd = (parseInt(accepts.amount) / 1_000_000).toFixed(3);
+  return `Payment required: $${costUsd} USDC on Base. This capability uses x402 micropayments — no API keys needed. Learn more: https://pylonapi.com`;
+}
+
 // ── Call the Pylon gateway ──
 async function callPylon(capabilityId, params) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
-
-  // Use API key for authentication (test bypass or future auth)
-  if (API_KEY) {
-    headers["x-test-key"] = API_KEY;
-  }
-
   const body = {
     capability: capabilityId,
     params,
@@ -108,18 +98,14 @@ async function callPylon(capabilityId, params) {
 
   const resp = await fetch(`${GATEWAY_URL}/do`, {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(60_000),
   });
 
   if (resp.status === 402) {
     const payReq = await resp.json();
-    return {
-      error: true,
-      message: "Payment required. Configure PYLON_API_KEY or set up x402 wallet payment.",
-      paymentRequired: payReq,
-    };
+    return { error: true, message: format402(payReq), paymentRequired: payReq };
   }
 
   if (!resp.ok) {
@@ -134,22 +120,20 @@ async function callPylon(capabilityId, params) {
 
 // ── Call the Pylon /do with natural language ──
 async function callPylonNatural(task, budget) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  if (API_KEY) {
-    headers["x-test-key"] = API_KEY;
-  }
-
   const body = { task };
   if (budget) body.budget = budget;
 
   const resp = await fetch(`${GATEWAY_URL}/do`, {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(60_000),
   });
+
+  if (resp.status === 402) {
+    const payReq = await resp.json();
+    return { error: true, message: format402(payReq), paymentRequired: payReq };
+  }
 
   if (!resp.ok) {
     const errText = await resp.text();
@@ -163,23 +147,21 @@ async function callPylonNatural(task, budget) {
 
 // ── Call the Pylon /do/chain for multi-step ──
 async function callPylonChain(task, budget, dryRun) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  if (API_KEY) {
-    headers["x-test-key"] = API_KEY;
-  }
-
   const body = { task };
   if (budget) body.budget = budget;
   if (dryRun) body.dryRun = true;
 
   const resp = await fetch(`${GATEWAY_URL}/do/chain`, {
     method: "POST",
-    headers,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(120_000),
   });
+
+  if (resp.status === 402) {
+    const payReq = await resp.json();
+    return { error: true, message: format402(payReq), paymentRequired: payReq };
+  }
 
   if (!resp.ok) {
     const errText = await resp.text();
@@ -202,7 +184,6 @@ function formatResult(result) {
 
   const parts = [];
 
-  // If result contains base64 image data
   const data = result.result || result.finalResult?.result || result;
   if (data?.base64 && data?.contentType?.startsWith("image/")) {
     parts.push({
@@ -215,18 +196,15 @@ function formatResult(result) {
       type: "text",
       text: `PDF generated (${data.sizeBytes} bytes). Base64 data available in response.`,
     });
-    // Include base64 for agents that can handle it
     parts.push({
       type: "text",
       text: `base64: ${data.base64.slice(0, 100)}...`,
     });
   } else {
-    // Text/JSON result
     const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
     parts.push({ type: "text", text });
   }
 
-  // Add metadata
   if (result.capability) {
     parts.push({
       type: "text",
@@ -234,7 +212,6 @@ function formatResult(result) {
     });
   }
 
-  // Add pricing transparency for discovered services
   if (result.pricing) {
     parts.push({
       type: "text",
@@ -249,7 +226,7 @@ function formatResult(result) {
 const server = new Server(
   {
     name: "pylon",
-    version: "1.0.0",
+    version: "1.0.1",
   },
   {
     capabilities: {
@@ -263,14 +240,12 @@ const server = new Server(
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   const capabilities = await getCapabilities();
 
-  // Build tool list from capabilities
   const tools = capabilities.map(cap => ({
     name: `pylon_${cap.id.replace(/-/g, "_")}`,
     description: `[Pylon ${cap.cost}] ${cap.description}`,
     inputSchema: toJsonSchema(cap.inputSchema),
   }));
 
-  // Add meta-tools
   tools.push({
     name: "pylon_do",
     description: "[Pylon] Execute any task using natural language. Pylon automatically matches to the right capability. Use this when you're not sure which specific tool to call.",
@@ -318,7 +293,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   try {
-    // Meta-tools
     if (name === "pylon_do") {
       const result = await callPylonNatural(args.task, args.budget);
       return formatResult(result);
@@ -337,7 +311,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
     }
 
-    // Specific capability tools: pylon_screenshot → screenshot
     if (name.startsWith("pylon_")) {
       const capId = name.replace("pylon_", "").replace(/_/g, "-");
       const result = await callPylon(capId, args);
@@ -356,7 +329,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
-// ── Resources: expose capabilities list ──
+// ── Resources ──
 server.setRequestHandler(ListResourcesRequestSchema, async () => {
   return {
     resources: [
@@ -407,7 +380,6 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 
 // ── Start ──
 async function main() {
-  // Pre-fetch capabilities
   const caps = await getCapabilities();
   console.error(`[pylon-mcp] Loaded ${caps.length} capabilities from ${GATEWAY_URL}`);
 

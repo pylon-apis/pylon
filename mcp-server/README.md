@@ -1,6 +1,6 @@
 # ⚡ Pylon MCP Server
 
-Give Claude, Cursor, and any MCP client access to **17+ capabilities** — screenshots, web scraping, PDF generation, search, and more. The action layer for AI agents.
+Give Claude, Cursor, and any MCP client access to **17+ capabilities** — screenshots, web scraping, PDF generation, search, and more. No API keys. Pay per request via x402 micropayments on Base.
 
 ## Quick Start
 
@@ -13,10 +13,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "pylon": {
       "command": "npx",
-      "args": ["-y", "@pylonapi/mcp"],
-      "env": {
-        "PYLON_API_KEY": "your-api-key"
-      }
+      "args": ["-y", "@pylonapi/mcp"]
     }
   }
 }
@@ -31,10 +28,7 @@ Add to `.cursor/mcp.json` in your project:
   "mcpServers": {
     "pylon": {
       "command": "npx",
-      "args": ["-y", "@pylonapi/mcp"],
-      "env": {
-        "PYLON_API_KEY": "your-api-key"
-      }
+      "args": ["-y", "@pylonapi/mcp"]
     }
   }
 }
@@ -43,7 +37,7 @@ Add to `.cursor/mcp.json` in your project:
 ### Run directly
 
 ```bash
-PYLON_API_KEY=your-key npx @pylonapi/mcp
+npx @pylonapi/mcp
 ```
 
 ## Available Tools
@@ -84,23 +78,22 @@ Each Pylon capability is exposed as a dedicated tool:
 | `pylon://capabilities` | Full capability list with schemas and pricing |
 | `pylon://status` | Live service status and circuit breaker states |
 
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PYLON_API_KEY` | — | API key for authentication |
-| `PYLON_GATEWAY_URL` | `https://api.pylonapi.com` | Gateway URL (override for self-hosted) |
-
 ## How It Works
 
 1. Claude/Cursor sees Pylon's tools via MCP
 2. User asks "take a screenshot of stripe.com"
 3. Claude calls `pylon_screenshot` with `{ "url": "https://stripe.com" }`
 4. MCP server sends the request to Pylon's gateway
-5. Gateway executes and returns the result
+5. Payment is handled automatically via [x402](https://x402.org) on Base
 6. Claude shows the screenshot to the user
 
-All payment handling happens automatically via x402 on Base.
+No API keys. No accounts. No subscriptions. Just pay-per-request.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PYLON_GATEWAY_URL` | `https://api.pylonapi.com` | Gateway URL (override for self-hosted) |
 
 ## Links
 
