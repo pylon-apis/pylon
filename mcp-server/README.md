@@ -1,6 +1,6 @@
 # ⚡ Pylon MCP Server
 
-Give Claude, Cursor, and any MCP client access to **17+ capabilities** — screenshots, web scraping, PDF generation, search, and more. No API keys. Pay per request via x402 micropayments on Base.
+Give Claude, Cursor, and any MCP client access to **20+ capabilities** — screenshots, web scraping, PDF generation, search, and more. No API keys. Pay per request via x402 micropayments on Base.
 
 ## Quick Start
 
