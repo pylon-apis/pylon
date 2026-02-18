@@ -7,7 +7,7 @@
  * Pylon's full capability set — the action layer for AI agents.
  *
  * Usage:
- *   PYLON_API_KEY=pylon-test-2026 npx @pylon/mcp
+ *   PYLON_API_KEY=your-api-key npx @pylon/mcp
  *
  * Or add to Claude Desktop config:
  *   {
