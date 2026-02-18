@@ -1,0 +1,48 @@
+{
+  "name": "@pylon-api/vercel-ai-tools",
+  "version": "1.0.0",
+  "description": "Pylon API Gateway tools for Vercel AI SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "ai",
+    "vercel",
+    "pylon",
+    "tools",
+    "agents",
+    "screenshot",
+    "search",
+    "scraping",
+    "ocr",
+    "translation"
+  ],
+  "author": "Pylon APIs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pylon-apis/pylon.git"
+  },
+  "homepage": "https://pylonapi.com",
+  "dependencies": {
+    "ai": "^3.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "peerDependencies": {
+    "ai": ">=3.0.0"
+  }
+}
