@@ -1,0 +1,18 @@
+{
+  "name": "@pylon/mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Pylon — The Action Layer for AI Agents. Gives Claude, Cursor, and any MCP client access to 17+ capabilities.",
+  "type": "module",
+  "bin": {
+    "pylon-mcp": "./index.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["mcp", "pylon", "ai-agents", "x402", "tools", "screenshot", "scrape", "pdf"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}
