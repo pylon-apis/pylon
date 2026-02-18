@@ -319,6 +319,24 @@ function extractParams(task, capability) {
   return params;
 }
 
+// ── Payment replay protection ──
+const paymentNonces = new Map(); // hash -> timestamp
+const NONCE_TTL = 300_000; // 5 minutes
+function isReplayedPayment(paymentHeader) {
+  // Simple hash of payment header
+  const hash = require("crypto").createHash("sha256").update(paymentHeader).digest("hex").slice(0, 16);
+  const now = Date.now();
+  // Clean old nonces periodically
+  if (Math.random() < 0.01) {
+    for (const [k, t] of paymentNonces) {
+      if (now - t > NONCE_TTL) paymentNonces.delete(k);
+    }
+  }
+  if (paymentNonces.has(hash)) return true;
+  paymentNonces.set(hash, now);
+  return false;
+}
+
 // ── x402 payment check ──
 async function x402PaymentCheck(req, res, next) {
   // Test bypass — restricted to internal/known IPs only
@@ -357,6 +375,11 @@ async function x402PaymentCheck(req, res, next) {
 
     res.status(402).json(paymentRequirements);
     return;
+  }
+
+  // Check for payment replay
+  if (isReplayedPayment(paymentHeader)) {
+    return res.status(402).json({ error: "Payment already used. Submit a new payment." });
   }
 
   // Verify payment with facilitator

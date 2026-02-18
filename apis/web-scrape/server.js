@@ -161,6 +161,24 @@ async function scrapeUrl(url, format = "markdown", waitFor = 0) {
     requestHandlerTimeoutSecs: SCRAPE_TIMEOUT / 1000,
     maxConcurrency: 1,
     async requestHandler({ page }) {
+      // SSRF protection: intercept all requests and block private IPs after redirects
+      await page.route("**/*", (route) => {
+        try {
+          const reqUrl = new URL(route.request().url());
+          const h = reqUrl.hostname.toLowerCase();
+          if (BLOCKED_HOSTS.includes(h) || BLOCKED_PATTERNS.some(p => p.test(h))) {
+            return route.abort("blockedbyclient");
+          }
+          // Block non-http protocols (file://, ftp://, etc.)
+          if (!["http:", "https:"].includes(reqUrl.protocol)) {
+            return route.abort("blockedbyclient");
+          }
+        } catch {
+          return route.abort("blockedbyclient");
+        }
+        return route.continue();
+      });
+
       await page.waitForLoadState("load");
 
       if (waitFor > 0) {
@@ -387,6 +405,11 @@ app.post("/scrape", x402PaymentCheck, async (req, res) => {
 
   if (!url) return res.status(400).json({ error: "Missing required parameter: url" });
 
+  // URL length limit
+  if (typeof url !== "string" || url.length > 4096) {
+    return res.status(400).json({ error: "URL too long (max 4096 chars)" });
+  }
+
   // Validate URL
   let parsed;
   try {
@@ -396,6 +419,11 @@ app.post("/scrape", x402PaymentCheck, async (req, res) => {
   }
   if (!["http:", "https:"].includes(parsed.protocol)) {
     return res.status(400).json({ error: "URL must use http or https" });
+  }
+
+  // Block credentials in URL (user:pass@host)
+  if (parsed.username || parsed.password) {
+    return res.status(400).json({ error: "URLs with authentication credentials are not allowed" });
   }
 
   // SSRF check — hostname
@@ -452,14 +480,16 @@ app.post("/scrape", x402PaymentCheck, async (req, res) => {
       result.content = stripPII(result.content);
     }
 
+    // Settle payment ONLY on success
     settlePayment(req);
     res.json(result);
   } catch (err) {
+    // On failure, do NOT settle — user keeps their USDC
     const msg = err.message || String(err);
     if (msg.includes("Timeout") || msg.includes("timeout")) {
-      return res.status(504).json({ error: "Page load timed out" });
+      return res.status(504).json({ error: "Page load timed out", note: "Payment was not settled — no charge." });
     }
-    return res.status(502).json({ error: "Failed to scrape URL", detail: msg });
+    return res.status(502).json({ error: "Failed to scrape URL", detail: msg, note: "Payment was not settled — no charge." });
   }
 });
 
