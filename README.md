@@ -41,8 +41,9 @@ x402-compatible clients handle this automatically. One round-trip.
 | **Image Resize** | Resize, crop, format convert | $0.01 | `pylon-image-resize-api.fly.dev` |
 | **Markdown → PDF** | Render markdown as styled PDF | $0.02 | `pylon-md-to-pdf-api.fly.dev` |
 | **HTML → PDF** | Full Chromium HTML rendering | $0.02 | `pylon-html-to-pdf-api.fly.dev` |
+| **Web Scrape** | Extract clean text/markdown from URLs | $0.01 | `pylon-web-scrape-api.fly.dev` |
 
-All APIs run on [Fly.io](https://fly.io) with scale-to-zero. No third-party API dependencies.
+**17 APIs** running on [Fly.io](https://fly.io) with scale-to-zero. No third-party API dependencies.
 
 ## Quick Start
 
@@ -79,6 +80,24 @@ npx @pylon-apis/pylon-mcp
 
 See [pylon-apis/pylon-mcp](https://github.com/pylon-apis/pylon-mcp) for setup.
 
+## Orchestration — `/do/chain`
+
+Chain multiple Pylon APIs in a single request. The orchestration endpoint lets agents describe a pipeline of API calls where outputs flow into inputs:
+
+```bash
+POST https://pylonapi.com/do/chain
+Content-Type: application/json
+
+{
+  "steps": [
+    { "api": "web-scrape", "params": { "url": "https://example.com" } },
+    { "api": "md-to-pdf", "params": { "markdown": "{{steps.0.output}}" } }
+  ]
+}
+```
+
+Each step runs sequentially. Reference previous outputs with `{{steps.N.output}}`. Payment covers all steps in the chain. One request, one payment, multiple operations.
+
 ## Why No API Keys?
 
 API keys are a bottleneck for autonomous agents. An agent can't sign up for accounts, enter credit cards, or manage billing dashboards. x402 lets payment *be* authentication — if you can pay, you can use the API. No human in the loop.
@@ -109,6 +128,10 @@ Remove the x402 middleware if you don't need payments. MIT licensed.
 - 🐦 [@pylonx402](https://twitter.com/pylonx402)
 - 🔌 [MCP Server](https://github.com/pylon-apis/pylon-mcp)
 - 📖 [x402 Protocol](https://x402.org)
+
+## Adding Your Own API
+
+Want to add an API to Pylon? See [PROVIDERS.md](PROVIDERS.md) for the full onboarding guide and check out the [provider-template/](provider-template/) for a starter repo.
 
 ## License
 
