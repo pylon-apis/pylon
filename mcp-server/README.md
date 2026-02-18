@@ -13,7 +13,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "pylon": {
       "command": "npx",
-      "args": ["-y", "@pylon/mcp"],
+      "args": ["-y", "@pylonapi/mcp"],
       "env": {
         "PYLON_API_KEY": "your-api-key"
       }
@@ -31,7 +31,7 @@ Add to `.cursor/mcp.json` in your project:
   "mcpServers": {
     "pylon": {
       "command": "npx",
-      "args": ["-y", "@pylon/mcp"],
+      "args": ["-y", "@pylonapi/mcp"],
       "env": {
         "PYLON_API_KEY": "your-api-key"
       }
@@ -43,7 +43,7 @@ Add to `.cursor/mcp.json` in your project:
 ### Run directly
 
 ```bash
-PYLON_API_KEY=your-key npx @pylon/mcp
+PYLON_API_KEY=your-key npx @pylonapi/mcp
 ```
 
 ## Available Tools

@@ -1,5 +1,5 @@
 {
-  "name": "@pylon/mcp",
+  "name": "@pylonapi/mcp",
   "version": "1.0.0",
   "description": "MCP server for Pylon — The Action Layer for AI Agents. Gives Claude, Cursor, and any MCP client access to 17+ capabilities.",
   "type": "module",
