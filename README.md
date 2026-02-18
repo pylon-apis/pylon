@@ -12,7 +12,7 @@
 Utility APIs that AI agents can call and pay for instantly with USDC micropayments via [x402](https://www.x402.org/).  
 No sign-up. No billing dashboard. Just HTTP.
 
-[Website](https://pylonapi.com) · [MCP Server](https://github.com/pylon-apis/pylon-mcp) · [Twitter](https://twitter.com/pylonx402)
+[Website](https://pylonapi.com) · [MCP Server](https://www.npmjs.com/package/@pylonapi/mcp) · [Smithery](https://smithery.ai/servers/pylonapi/pylon) · [Twitter](https://twitter.com/pylonx402)
 
 </div>
 
@@ -28,22 +28,32 @@ No sign-up. No billing dashboard. Just HTTP.
 
 x402-compatible clients handle this automatically. One round-trip.
 
-## Live APIs
+## Live APIs (20+)
 
-| API | What it does | Price | Endpoint |
-|-----|-------------|-------|----------|
-| **Screenshot** | Full-page screenshot of any URL | $0.01 | `pylon-screenshot-api.fly.dev` |
-| **PDF Parse** | Extract text + metadata from PDFs | $0.02 | `pylon-pdf-parse-api.fly.dev` |
-| **OCR** | Image → text via Tesseract | $0.03 | `pylon-ocr-api.fly.dev` |
-| **Email Validate** | MX + SMTP verification | $0.005 | `pylon-email-validate-api.fly.dev` |
-| **Domain Intel** | WHOIS, DNS, SSL, tech stack | $0.01 | `pylon-domain-intel-api.fly.dev` |
-| **QR Code** | Generate QR code images | $0.005 | `pylon-qr-code-api.fly.dev` |
-| **Image Resize** | Resize, crop, format convert | $0.01 | `pylon-image-resize-api.fly.dev` |
-| **Markdown → PDF** | Render markdown as styled PDF | $0.02 | `pylon-md-to-pdf-api.fly.dev` |
-| **HTML → PDF** | Full Chromium HTML rendering | $0.02 | `pylon-html-to-pdf-api.fly.dev` |
-| **Web Scrape** | Extract clean text/markdown from URLs | $0.01 | `pylon-web-scrape-api.fly.dev` |
+| API | What it does | Price |
+|-----|-------------|-------|
+| **Screenshot** | Full-page screenshot of any URL | $0.01 |
+| **Web Scrape** | Extract clean text/markdown from URLs | $0.01 |
+| **Web Extract** | Structured data extraction from web pages | $0.01 |
+| **Search** | Web search results | $0.01 |
+| **PDF Parse** | Extract text + metadata from PDFs | $0.02 |
+| **OCR** | Image → text via Tesseract | $0.03 |
+| **Translate** | Translate text between languages | $0.005 |
+| **Email Validate** | MX + SMTP verification | $0.005 |
+| **Domain Intel** | WHOIS, DNS, SSL, tech stack | $0.01 |
+| **DNS Lookup** | DNS record queries | $0.005 |
+| **IP Geolocation** | IP → location, ISP, timezone | $0.005 |
+| **QR Code** | Generate QR code images | $0.005 |
+| **Image Resize** | Resize, crop, format convert | $0.01 |
+| **Markdown → PDF** | Render markdown as styled PDF | $0.02 |
+| **HTML → PDF** | Full Chromium HTML rendering | $0.02 |
+| **Doc Gen** | Generate documents from templates | $0.02 |
+| **Data Formatter** | Convert between JSON, CSV, XML, YAML | $0.005 |
+| **URL Shortener** | Create short URLs | $0.005 |
+| **File Storage** | Temporary file hosting | $0.005 |
+| **Email Send** | Transactional email delivery | $0.01 |
 
-**17 APIs** running on [Fly.io](https://fly.io) with scale-to-zero. No third-party API dependencies.
+All APIs run on [Fly.io](https://fly.io) with scale-to-zero. No third-party API dependencies.
 
 ## Quick Start
 
@@ -75,10 +85,12 @@ const response = await fetch402("https://pylon-screenshot-api.fly.dev/screenshot
 Use all Pylon APIs from Claude, Cursor, or any MCP-compatible tool:
 
 ```bash
-npx @pylon-apis/pylon-mcp
+npx @pylonapi/mcp
 ```
 
-See [pylon-apis/pylon-mcp](https://github.com/pylon-apis/pylon-mcp) for setup.
+Or install globally: `npm i -g @pylonapi/mcp`
+
+See the [MCP server on npm](https://www.npmjs.com/package/@pylonapi/mcp) or browse it on [Smithery](https://smithery.ai/servers/pylonapi/pylon).
 
 ## Orchestration — `/do/chain`
 
@@ -126,7 +138,7 @@ Remove the x402 middleware if you don't need payments. MIT licensed.
 
 - 🌐 [pylonapi.com](https://pylonapi.com)
 - 🐦 [@pylonx402](https://twitter.com/pylonx402)
-- 🔌 [MCP Server](https://github.com/pylon-apis/pylon-mcp)
+- 🔌 [MCP Server](https://www.npmjs.com/package/@pylonapi/mcp)
 - 📖 [x402 Protocol](https://x402.org)
 
 ## Adding Your Own API
