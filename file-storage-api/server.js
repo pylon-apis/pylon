@@ -202,6 +202,10 @@ app.get("/health", (req, res) => {
 // Serve files — no auth, URL is the access token
 app.get("/files/:id/:filename", (req, res) => {
   const { id, filename } = req.params;
+  // Path traversal protection
+  if (!/^[a-zA-Z0-9_-]+$/.test(id) || id.includes("..")) {
+    return res.status(400).json({ error: "Invalid file ID" });
+  }
   const meta = loadMeta(id);
   if (!meta) return res.status(404).json({ error: "File not found" });
 

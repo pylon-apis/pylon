@@ -1,0 +1,522 @@
+[
+  {
+    "id": "screenshot",
+    "name": "Screenshot",
+    "description": "Take a full-page screenshot of any webpage. Returns PNG or JPEG image.",
+    "keywords": [
+      "screenshot",
+      "capture",
+      "webpage",
+      "page",
+      "render",
+      "visual",
+      "snap",
+      "picture of website",
+      "how does it look"
+    ],
+    "endpoint": "https://pylon-screenshot-api.fly.dev/screenshot",
+    "method": "GET",
+    "cost": "$0.01",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL to screenshot"
+      },
+      "width": {
+        "type": "number",
+        "default": 1280,
+        "description": "Viewport width in pixels"
+      },
+      "height": {
+        "type": "number",
+        "default": 720,
+        "description": "Viewport height in pixels"
+      },
+      "fullPage": {
+        "type": "boolean",
+        "default": false,
+        "description": "Capture full scrollable page"
+      },
+      "format": {
+        "type": "string",
+        "default": "png",
+        "description": "Image format: png or jpeg"
+      }
+    },
+    "outputType": "image/png"
+  },
+  {
+    "id": "pdf-parse",
+    "name": "PDF Parse",
+    "description": "Extract text content and metadata from a PDF document by URL.",
+    "keywords": [
+      "pdf",
+      "parse",
+      "extract",
+      "text",
+      "document",
+      "read pdf",
+      "pdf to text"
+    ],
+    "endpoint": "https://pylon-pdf-parse-api.fly.dev/parse",
+    "method": "POST",
+    "cost": "$0.02",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL of the PDF to parse"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "ocr",
+    "name": "OCR",
+    "description": "Extract text from an image using optical character recognition (OCR).",
+    "keywords": [
+      "ocr",
+      "image to text",
+      "read image",
+      "extract text from image",
+      "recognize text",
+      "handwriting"
+    ],
+    "endpoint": "https://pylon-ocr-api.fly.dev/extract",
+    "method": "POST",
+    "cost": "$0.03",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL of the image"
+      },
+      "language": {
+        "type": "string",
+        "default": "eng",
+        "description": "OCR language code"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "email-validate",
+    "name": "Email Validate",
+    "description": "Validate an email address \u2014 checks format, MX records, and SMTP deliverability.",
+    "keywords": [
+      "email",
+      "validate",
+      "verify",
+      "check email",
+      "deliverable",
+      "mx",
+      "smtp",
+      "disposable"
+    ],
+    "endpoint": "https://pylon-email-validate-api.fly.dev/validate",
+    "method": "GET",
+    "cost": "$0.005",
+    "inputSchema": {
+      "email": {
+        "type": "string",
+        "required": true,
+        "description": "Email address to validate"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "domain-intel",
+    "name": "Domain Intel",
+    "description": "Get intelligence on a domain \u2014 WHOIS data, DNS records, SSL certificate info, and technology stack detection.",
+    "keywords": [
+      "domain",
+      "whois",
+      "dns",
+      "ssl",
+      "tech stack",
+      "lookup",
+      "domain info",
+      "certificate",
+      "nameserver",
+      "tell me about",
+      "who owns",
+      "what is"
+    ],
+    "endpoint": "https://pylon-domain-intel-api.fly.dev/lookup",
+    "method": "GET",
+    "cost": "$0.01",
+    "inputSchema": {
+      "domain": {
+        "type": "string",
+        "required": true,
+        "description": "Domain name to analyze"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "qr-code",
+    "name": "QR Code",
+    "description": "Generate a QR code image from text, URL, or other data.",
+    "keywords": [
+      "qr",
+      "qr code",
+      "generate qr",
+      "barcode",
+      "scan code"
+    ],
+    "endpoint": "https://pylon-qr-code-api.fly.dev/generate",
+    "method": "GET",
+    "cost": "$0.005",
+    "inputSchema": {
+      "data": {
+        "type": "string",
+        "required": true,
+        "description": "Data to encode in the QR code"
+      },
+      "size": {
+        "type": "number",
+        "default": 300,
+        "description": "QR code size in pixels"
+      }
+    },
+    "outputType": "image/png"
+  },
+  {
+    "id": "image-resize",
+    "name": "Image Resize",
+    "description": "Resize, crop, or convert image format. Supports PNG, JPEG, WebP.",
+    "keywords": [
+      "image",
+      "resize",
+      "crop",
+      "thumbnail",
+      "convert",
+      "compress",
+      "scale",
+      "shrink",
+      "enlarge"
+    ],
+    "endpoint": "https://pylon-image-resize-api.fly.dev/resize",
+    "method": "POST",
+    "cost": "$0.01",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL of the image"
+      },
+      "width": {
+        "type": "number",
+        "description": "Target width in pixels"
+      },
+      "height": {
+        "type": "number",
+        "description": "Target height in pixels"
+      },
+      "format": {
+        "type": "string",
+        "default": "png",
+        "description": "Output format: png, jpeg, webp"
+      }
+    },
+    "outputType": "image/png"
+  },
+  {
+    "id": "md-to-pdf",
+    "name": "Markdown to PDF",
+    "description": "Render markdown text as a styled PDF document.",
+    "keywords": [
+      "markdown",
+      "pdf",
+      "render",
+      "convert markdown",
+      "md to pdf",
+      "document"
+    ],
+    "endpoint": "https://pylon-md-to-pdf-api.fly.dev/convert",
+    "method": "POST",
+    "cost": "$0.02",
+    "inputSchema": {
+      "markdown": {
+        "type": "string",
+        "required": true,
+        "description": "Markdown content to render"
+      }
+    },
+    "outputType": "application/pdf"
+  },
+  {
+    "id": "html-to-pdf",
+    "name": "HTML to PDF",
+    "description": "Render HTML content as a PDF using full Chromium rendering engine.",
+    "keywords": [
+      "html",
+      "pdf",
+      "render html",
+      "webpage to pdf",
+      "print",
+      "html to pdf"
+    ],
+    "endpoint": "https://pylon-html-to-pdf-api.fly.dev/convert",
+    "method": "GET",
+    "cost": "$0.02",
+    "inputSchema": {
+      "html": {
+        "type": "string",
+        "description": "HTML content to render"
+      },
+      "url": {
+        "type": "string",
+        "description": "URL to render as PDF (alternative to html)"
+      }
+    },
+    "outputType": "application/pdf"
+  },
+  {
+    "id": "search",
+    "name": "Web Search",
+    "description": "Search the web and return relevant results. Returns titles, URLs, and snippets.",
+    "keywords": [
+      "search",
+      "find",
+      "look up",
+      "google",
+      "web search",
+      "query",
+      "research"
+    ],
+    "endpoint": "https://pylon-search-api.fly.dev/search",
+    "method": "GET",
+    "cost": "$0.003",
+    "inputSchema": {
+      "q": {
+        "type": "string",
+        "required": true,
+        "description": "Search query"
+      },
+      "count": {
+        "type": "number",
+        "default": 10,
+        "description": "Number of results"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "file-storage",
+    "name": "File Storage",
+    "description": "Upload a file and get a public URL. Supports any file type up to 50MB. Files expire after 30 days.",
+    "keywords": [
+      "upload",
+      "file",
+      "storage",
+      "host",
+      "store",
+      "share file",
+      "public url",
+      "save file"
+    ],
+    "endpoint": "https://pylon-file-storage-api.fly.dev/upload",
+    "method": "POST",
+    "cost": "$0.005",
+    "inputSchema": {
+      "file": {
+        "type": "string",
+        "required": true,
+        "description": "File to upload (multipart) or URL to fetch"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "doc-gen",
+    "name": "Document Generation",
+    "description": "Generate professional PDF documents from templates and data. Supports invoice, receipt, report, and letter templates, or custom HTML.",
+    "keywords": [
+      "document",
+      "generate",
+      "pdf",
+      "invoice",
+      "receipt",
+      "report",
+      "letter",
+      "template",
+      "create document",
+      "create pdf"
+    ],
+    "endpoint": "https://pylon-doc-gen-api.fly.dev/generate",
+    "method": "POST",
+    "cost": "$0.02",
+    "inputSchema": {
+      "template": {
+        "type": "string",
+        "description": "Template name: invoice, receipt, report, letter"
+      },
+      "data": {
+        "type": "object",
+        "required": true,
+        "description": "Template data as JSON"
+      },
+      "custom_html": {
+        "type": "string",
+        "description": "Custom HTML template (alternative to named template)"
+      }
+    },
+    "outputType": "application/pdf"
+  },
+  {
+    "id": "url-shortener",
+    "name": "URL Shortener",
+    "description": "Shorten any URL and get click tracking stats. Custom slugs supported.",
+    "keywords": [
+      "shorten",
+      "short url",
+      "short link",
+      "url shortener",
+      "tiny url",
+      "link"
+    ],
+    "endpoint": "https://pylon-url-shortener-api.fly.dev/shorten",
+    "method": "POST",
+    "cost": "$0.002",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL to shorten"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "data-formatter",
+    "name": "Data Formatter",
+    "description": "Convert data between JSON, CSV, XML, and YAML formats.",
+    "keywords": [
+      "convert",
+      "format",
+      "json to csv",
+      "csv to json",
+      "xml",
+      "yaml",
+      "transform",
+      "formatter",
+      "data format"
+    ],
+    "endpoint": "https://pylon-data-formatter-api.fly.dev/convert",
+    "method": "POST",
+    "cost": "$0.002",
+    "inputSchema": {
+      "input": {
+        "type": "string",
+        "required": true,
+        "description": "Input data"
+      },
+      "from": {
+        "type": "string",
+        "required": true,
+        "description": "Source format: json, csv, xml, yaml"
+      },
+      "to": {
+        "type": "string",
+        "required": true,
+        "description": "Target format: json, csv, xml, yaml"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "ip-geo",
+    "name": "IP Geolocation",
+    "description": "Look up the geographic location of any IP address.",
+    "keywords": [
+      "ip",
+      "geolocation",
+      "geolocate",
+      "ip lookup",
+      "ip address",
+      "location",
+      "geo"
+    ],
+    "endpoint": "https://pylon-ip-geo-api.fly.dev/lookup",
+    "method": "GET",
+    "cost": "$0.002",
+    "inputSchema": {
+      "ip": {
+        "type": "string",
+        "required": true,
+        "description": "IP address to look up"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "dns-lookup",
+    "name": "DNS Lookup",
+    "description": "Look up DNS records for any domain. Supports A, AAAA, MX, CNAME, TXT, NS, SOA, SRV, PTR, and ALL.",
+    "keywords": [
+      "dns",
+      "dns lookup",
+      "dns records",
+      "mx record",
+      "nameserver",
+      "a record",
+      "txt record",
+      "cname"
+    ],
+    "endpoint": "https://pylon-dns-lookup-api.fly.dev/lookup",
+    "method": "GET",
+    "cost": "$0.002",
+    "inputSchema": {
+      "domain": {
+        "type": "string",
+        "required": true,
+        "description": "Domain to look up"
+      },
+      "type": {
+        "type": "string",
+        "default": "A",
+        "description": "Record type: A, AAAA, MX, CNAME, TXT, NS, SOA, SRV, PTR, ALL"
+      }
+    },
+    "outputType": "application/json"
+  },
+  {
+    "id": "web-scrape",
+    "name": "Web Scrape",
+    "description": "Scrape and extract readable content from any URL. Returns markdown, text, or HTML.",
+    "keywords": [
+      "scrape",
+      "crawl",
+      "extract",
+      "web content",
+      "page content",
+      "readable",
+      "article"
+    ],
+    "endpoint": "https://pylon-web-scrape-api.fly.dev/scrape",
+    "method": "POST",
+    "cost": "$0.01",
+    "inputSchema": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "URL to scrape"
+      },
+      "format": {
+        "type": "string",
+        "default": "markdown",
+        "description": "Output format: markdown, text, or html"
+      },
+      "waitFor": {
+        "type": "number",
+        "default": 0,
+        "description": "Extra milliseconds to wait after page load (max 10000)"
+      }
+    },
+    "outputType": "json"
+  }
+]

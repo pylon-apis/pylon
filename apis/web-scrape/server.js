@@ -398,9 +398,20 @@ app.post("/scrape", x402PaymentCheck, async (req, res) => {
     return res.status(400).json({ error: "URL must use http or https" });
   }
 
-  // SSRF check
+  // SSRF check — hostname
   if (isBlockedHost(parsed.hostname)) {
     return res.status(400).json({ error: "URL points to a blocked internal address" });
+  }
+
+  // SSRF check — resolve DNS and check actual IP
+  try {
+    const dns = require("dns").promises;
+    const { address } = await dns.lookup(parsed.hostname);
+    if (isBlockedHost(address)) {
+      return res.status(400).json({ error: "URL resolves to a blocked internal address" });
+    }
+  } catch (dnsErr) {
+    // If DNS fails, let Crawlee handle it (it'll fail too)
   }
 
   // Validate format
@@ -428,6 +439,13 @@ app.post("/scrape", x402PaymentCheck, async (req, res) => {
   // Scrape
   try {
     const result = await scrapeUrl(url, format, waitFor);
+
+    // Response size limit — 5MB max
+    const MAX_RESPONSE_SIZE = 5_000_000;
+    if (typeof result.content === "string" && result.content.length > MAX_RESPONSE_SIZE) {
+      result.content = result.content.slice(0, MAX_RESPONSE_SIZE);
+      result.truncated = true;
+    }
 
     // Strip PII from content
     if (typeof result.content === "string") {
