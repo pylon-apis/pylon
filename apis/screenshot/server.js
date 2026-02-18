@@ -132,7 +132,7 @@ async function x402PaymentCheck(req, res, next) {
       accepts: [{
         scheme: "exact",
         network: NETWORK,
-        maxAmountRequired: "10000", // $0.01 in USDC (6 decimals)
+        amount: "10000", asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // $0.01 in USDC (6 decimals)
         resource: req.originalUrl,
         description: "Take a screenshot of any URL",
         mimeType: "image/png",
@@ -162,7 +162,7 @@ async function x402PaymentCheck(req, res, next) {
         details: {
           scheme: "exact",
           network: NETWORK,
-          maxAmountRequired: "10000",
+          amount: "10000", asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           resource: req.originalUrl,
           description: "Take a screenshot of any URL",
           payTo: WALLET_ADDRESS,
@@ -255,7 +255,7 @@ app.get("/screenshot", x402PaymentCheck, async (req, res) => {
           details: {
             scheme: "exact",
             network: NETWORK,
-            maxAmountRequired: "10000",
+            amount: "10000", asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
             resource: req.originalUrl,
             description: "Take a screenshot of any URL",
             payTo: WALLET_ADDRESS,

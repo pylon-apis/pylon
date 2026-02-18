@@ -57,7 +57,7 @@ async function x402PaymentCheck(req, res, next) {
       accepts: [{
         scheme: "exact",
         network: NETWORK,
-        maxAmountRequired: PRICE_AMOUNT,
+        amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         resource: req.originalUrl,
         description: "Shorten a URL",
         mimeType: "application/json",
@@ -78,7 +78,7 @@ async function x402PaymentCheck(req, res, next) {
       body: JSON.stringify({
         payload: paymentHeader,
         details: {
-          scheme: "exact", network: NETWORK, maxAmountRequired: PRICE_AMOUNT,
+          scheme: "exact", network: NETWORK, amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           resource: req.originalUrl, description: "Shorten a URL",
           payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null,
           extra: { name: "USDC", version: "2" },
@@ -104,7 +104,7 @@ function settlePayment(req) {
     body: JSON.stringify({
       payload: req.x402Payment,
       details: {
-        scheme: "exact", network: NETWORK, maxAmountRequired: PRICE_AMOUNT,
+        scheme: "exact", network: NETWORK, amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         resource: req.originalUrl, description: "Shorten a URL",
         payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null,
         extra: { name: "USDC", version: "2" },

@@ -148,7 +148,7 @@ async function x402PaymentCheck(req, res, next) {
       accepts: [{
         scheme: "exact",
         network: NETWORK,
-        maxAmountRequired: PRICE_AMOUNT,
+        amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         resource: req.originalUrl,
         description: "Generate a professional PDF document",
         mimeType: "application/pdf",
@@ -172,7 +172,7 @@ async function x402PaymentCheck(req, res, next) {
         details: {
           scheme: "exact",
           network: NETWORK,
-          maxAmountRequired: PRICE_AMOUNT,
+          amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           resource: req.originalUrl,
           description: "Generate a professional PDF document",
           payTo: WALLET_ADDRESS,
@@ -210,7 +210,7 @@ function settlePayment(req) {
         details: {
           scheme: "exact",
           network: NETWORK,
-          maxAmountRequired: PRICE_AMOUNT,
+          amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           resource: req.originalUrl,
           description: "Generate a professional PDF document",
           payTo: WALLET_ADDRESS,

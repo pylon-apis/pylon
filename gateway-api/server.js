@@ -360,7 +360,7 @@ async function x402PaymentCheck(req, res, next) {
       accepts: [{
         scheme: "exact",
         network: NETWORK,
-        maxAmountRequired: String(costInMicro),
+        amount: String(costInMicro), asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         resource: "/do",
         description: "Pylon Agent Gateway — execute any task",
         mimeType: "application/json",
@@ -394,7 +394,7 @@ async function x402PaymentCheck(req, res, next) {
         details: {
           scheme: "exact",
           network: NETWORK,
-          maxAmountRequired: String(verifyCostMicro),
+          amount: String(verifyCostMicro), asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           resource: "/do",
           description: "Pylon Agent Gateway",
           mimeType: "application/json",

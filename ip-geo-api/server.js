@@ -35,7 +35,7 @@ async function x402PaymentCheck(req, res, next) {
     return res.status(402).json({
       x402Version: 2,
       accepts: [{
-        scheme: "exact", network: NETWORK, maxAmountRequired: PRICE_AMOUNT,
+        scheme: "exact", network: NETWORK, amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         resource: req.originalUrl, description: "IP geolocation lookup",
         mimeType: "application/json", payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60,
         outputSchema: null, extra: { name: "USDC", version: "2" },
@@ -46,7 +46,7 @@ async function x402PaymentCheck(req, res, next) {
   try {
     const verifyRes = await fetch(`${FACILITATOR_URL}/verify`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ payload: paymentHeader, details: { scheme: "exact", network: NETWORK, maxAmountRequired: PRICE_AMOUNT, resource: req.originalUrl, description: "IP geolocation lookup", payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null, extra: { name: "USDC", version: "2" } } }),
+      body: JSON.stringify({ payload: paymentHeader, details: { scheme: "exact", network: NETWORK, amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", resource: req.originalUrl, description: "IP geolocation lookup", payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null, extra: { name: "USDC", version: "2" } } }),
     });
     if (!verifyRes.ok) return res.status(402).json({ error: "Payment verification failed" });
     const result = await verifyRes.json();
@@ -63,7 +63,7 @@ function settlePayment(req) {
   if (!req.x402Payment) return;
   fetch(`${FACILITATOR_URL}/settle`, {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ payload: req.x402Payment, details: { scheme: "exact", network: NETWORK, maxAmountRequired: PRICE_AMOUNT, resource: req.originalUrl, description: "IP geolocation lookup", payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null, extra: { name: "USDC", version: "2" } } }),
+    body: JSON.stringify({ payload: req.x402Payment, details: { scheme: "exact", network: NETWORK, amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", resource: req.originalUrl, description: "IP geolocation lookup", payTo: WALLET_ADDRESS, maxTimeoutSeconds: 60, outputSchema: null, extra: { name: "USDC", version: "2" } } }),
   }).catch(err => console.error("Settlement error:", err.message));
 }
 

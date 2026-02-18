@@ -92,7 +92,7 @@ function getPaymentDetails(resource) {
   return {
     scheme: "exact",
     network: NETWORK,
-    maxAmountRequired: PRICE_AMOUNT,
+    amount: PRICE_AMOUNT, asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     resource,
     description: "Extract text from a PDF document",
     mimeType: "application/json",
